@@ -7,9 +7,9 @@ app = Flask(__name__)
 app.secret_key = "your_secret_key"  # Needed for flash messages
 
 db_config = {
-    'host': 'db-instance-commerce.cfwim48wwhiq.ap-south-1.rds.amazonaws.com',
-    'user': 'admin',
-    'password': 'Siri#123456',
+    'host': 'freshbasketdb.c5kyko40s4hb.us-east-1.rds.amazonaws.com',
+    'user': 'root',
+    'password': 'Freshbasket123',
     'database': 'fresh'
 }
 
