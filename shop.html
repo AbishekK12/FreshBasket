@@ -58,26 +58,50 @@
                 const productElement = document.createElement('div');
                 productElement.className = 'product dashboard-item';
                 productElement.innerHTML = `
-                    <img src="
-                    ${product.image}" alt="${product.name}">
+                    <img src="${product.image}" alt="${product.name}">
                     <h3>${product.name}</h3>
                     <p>$${product.price.toFixed(2)}</p>
+                    <div class="quantity-control">
+                        <button onclick="changeQuantity('${product.name}', -1)">-</button>
+                        <input type="number" id="quantity-${product.name.replace(/\s+/g, '-').toLowerCase()}" value="1" min="1" onchange="updateQuantity('${product.name}', this.value)">
+                        <button onclick="changeQuantity('${product.name}', 1)">+</button>
+                    </div>
                     <button onclick="addToCart('${product.name}', ${product.price})">Add to Cart</button>
                 `;
                 productList.appendChild(productElement);
             });
         });
 
-        function addToCart(name, price) {
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            cart.push({ name, price });
-            localStorage.setItem('cart', JSON.stringify(cart));
-            showCustomAlert(`${name} added to cart!`);
+        function changeQuantity(productName, change) {
+            const inputId = `quantity-${productName.replace(/\s+/g, '-').toLowerCase()}`;
+            const input = document.getElementById(inputId);
+            input.value = Math.max(1, parseInt(input.value) + change);
         }
 
-        function showCustomAlert(message) {
+        function updateQuantity(productName, newQuantity) {
+            const inputId = `quantity-${productName.replace(/\s+/g, '-').toLowerCase()}`;
+            const input = document.getElementById(inputId);
+            input.value = Math.max(1, parseInt(newQuantity) || 1);
+        }
+
+        function addToCart(name, price) {
+            const inputId = `quantity-${name.replace(/\s+/g, '-').toLowerCase()}`;
+            const quantity = parseInt(document.getElementById(inputId).value);
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let existingItem = cart.find(item => item.name === name);
+            if (existingItem) {
+                existingItem.quantity += quantity;
+            } else {
+                cart.push({ name, price, quantity });
+            }
+            localStorage.setItem('cart', JSON.stringify(cart));
+            showCustomAlert(`${quantity} ${name}${quantity > 1 ? 's' : ''} added to cart!`, 'success');
+        }
+
+        function showCustomAlert(message, type = 'success') {
             const alertElement = document.getElementById('custom-alert');
             alertElement.textContent = message;
+            alertElement.className = `custom-alert ${type}`;
             alertElement.style.display = 'block';
             setTimeout(() => {
                 alertElement.style.display = 'none';

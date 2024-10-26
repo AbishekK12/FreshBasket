@@ -4,28 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FreshBasket - Cart</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href='styles.css'>
 </head>
 <body>
-    <header>
-        <h1>Your FreshBasket Cart</h1>
-        <nav>
-            <a href="home.html">Home</a>
-            <a href="shop.html">Shop</a>
-            <a href="cart.html">Cart</a>
-            <a href="login.html">Login</a>
-        </nav>
-    </header>
+    <div class="page-container">
+        <header>
+            <nav>
+                <a href="home.html" class="logo">FreshBasket</a>
+                <div class="nav-links">
+                    <a href="home.html">Home</a>
+                    <a href="shop.html">Shop</a>
+                    <a href="cart.html" class="active">Cart</a>
+                    <a href="login.html">Login</a>
+                </div>
+            </nav>
+        </header>
 
-    <main>
-        <section id="cart-items"></section>
-        <p>Total: $<span id="cart-total">0.00</span></p>
-        <button onclick="checkout()">Checkout</button>
-    </main>
+        <div class="content-wrap">
+            <main class="cart-container">
+                <h1>Your FreshBasket Cart</h1>
+                <section id="cart-items"></section>
+                <div class="cart-summary">
+                    <p>Total: $<span id="cart-total">0.00</span></p>
+                    <button onclick="checkout()" class="btn-primary">Checkout</button>
+                </div>
+            </main>
+        </div>
 
-    <footer>
-        <p>&copy; 2024 FreshBasket. All rights reserved.</p>
-    </footer>
+        <footer>
+            <p>&copy; 2024 FreshBasket. All rights reserved.</p>
+        </footer>
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -40,19 +50,45 @@
 
             cartItems.innerHTML = '';
 
-            cart.forEach((item, index) => {
-                const itemElement = document.createElement('div');
-                itemElement.className = 'cart-item';
-                itemElement.innerHTML = `
-                    <span>${item.name}</span>
-                    <span>$${item.price.toFixed(2)}</span>
-                    <button onclick="removeFromCart(${index})">Remove</button>
-                `;
-                cartItems.appendChild(itemElement);
-                total += item.price;
-            });
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<p>Your cart is empty.</p>';
+                showCustomAlert('Your cart is empty. Add some fresh items!', 'info');
+            } else {
+                cart.forEach((item, index) => {
+                    total += item.price * item.quantity;
+                    const itemElement = document.createElement('div');
+                    itemElement.className = 'cart-item';
+                    itemElement.innerHTML = `
+                        <span class="item-name">${item.name}</span>
+                        <div class="item-details">
+                            <div class="quantity-control">
+                                <button onclick="changeQuantity(${index}, -1)">-</button>
+                                <input type="number" value="${item.quantity}" min="1" onchange="updateQuantity(${index}, this.value)">
+                                <button onclick="changeQuantity(${index}, 1)">+</button>
+                            </div>
+                            <span class="item-price">$${(item.price * item.quantity).toFixed(2)}</span>
+                            <button onclick="removeFromCart(${index})" class="remove-btn">Remove</button>
+                        </div>
+                    `;
+                    cartItems.appendChild(itemElement);
+                });
+            }
 
             cartTotal.textContent = total.toFixed(2);
+        }
+
+        function changeQuantity(index, change) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart[index].quantity = Math.max(1, cart[index].quantity + change);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            displayCart();
+        }
+
+        function updateQuantity(index, newQuantity) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart[index].quantity = Math.max(1, parseInt(newQuantity) || 1);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            displayCart();
         }
 
         function removeFromCart(index) {
@@ -60,13 +96,64 @@
             cart.splice(index, 1);
             localStorage.setItem('cart', JSON.stringify(cart));
             displayCart();
+            showCustomAlert('Item removed from cart', 'error');
         }
 
         function checkout() {
-            alert('Thank you for your purchase!');
-            localStorage.removeItem('cart');
-            displayCart();
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            if (cart.length === 0) {
+                showCheckoutPopup('Cart is Empty', 'Your cart is empty. Add some items before checking out!', 'Continue Shopping');
+            } else {
+                // Implement checkout logic here
+                localStorage.removeItem('cart');
+                displayCart();
+                showCheckoutPopup('Thank You for Your Purchase!', 'Your order has been successfully placed.', 'Continue Shopping');
+            }
+        }
+
+        function showCheckoutPopup(title, message, buttonText) {
+            const popup = document.getElementById('checkout-popup');
+            const popupTitle = document.getElementById('popup-title');
+            const popupMessage = document.getElementById('popup-message');
+            const popupButton = document.getElementById('popup-button');
+
+            popupTitle.textContent = title;
+            popupMessage.textContent = message;
+            popupButton.textContent = buttonText;
+
+            popup.style.display = 'block';
+        }
+
+        function closePopup() {
+            const popup = document.getElementById('checkout-popup');
+            popup.style.display = 'none';
+        }
+
+        // Add this to ensure the popup can be closed by clicking outside of it
+        window.onclick = function(event) {
+            const popup = document.getElementById('checkout-popup');
+            if (event.target == popup) {
+                popup.style.display = "none";
+            }
+        }
+
+        function showCustomAlert(message, type = 'success') {
+            const alertElement = document.getElementById('custom-alert');
+            alertElement.textContent = message;
+            alertElement.className = `custom-alert ${type}`;
+            alertElement.style.display = 'block';
+            setTimeout(() => {
+                alertElement.style.display = 'none';
+            }, 3000);
         }
     </script>
+    <!-- Add this just before the closing </body> tag -->
+    <div id="checkout-popup" class="popup">
+        <div class="popup-content">
+            <h2 id="popup-title"></h2>
+            <p id="popup-message"></p>
+            <button onclick="closePopup()" class="btn-primary" id="popup-button"></button>
+        </div>
+    </div>
 </body>
 </html>
