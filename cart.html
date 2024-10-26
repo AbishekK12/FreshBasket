@@ -254,11 +254,11 @@
             document.getElementById('cart-total').textContent = '0.00';
 
             // Show order placed popup
-            showCheckoutPopup('Order Placed', 'Your order has been placed successfully! Redirecting to admin dashboard...', 'OK');
+            showCheckoutPopup('Order Placed', 'Your order has been placed successfully! Redirecting to user dashboard...', 'OK');
 
-            // Redirect to admin dashboard after a short delay
+            // Redirect to user dashboard after a short delay
             setTimeout(() => {
-                window.location.href = 'admin_dashboard.html';
+                window.location.href = 'user_dashboard.html';
             }, 3000);
         }
 
