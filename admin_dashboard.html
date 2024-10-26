@@ -14,93 +14,86 @@
 >>>>>>> 01752eb411cea12ebf8183364eccb9b0b323e8a7
 </head>
 <body>
-    <header>
-        <h1>Admin Dashboard</h1>
-        <nav>
-            <a href="home.html">Home</a>
-            <a href="admin_dashboard.html">Dashboard</a>
-            <a href="/logout">Logout</a>
-        </nav>
-    </header>
+    <div class="page-container">
+        <header>
+            <nav>
+                <a href="#" class="logo">Admin Dashboard</a>
+                <div class="nav-links">
+                    <a href="#" class="active">Home</a>
+                    <a href="#">Orders</a>
+                    <a href="#">Products</a>
+                    <a href="#">Users</a>
+                    <a href="#">Settings</a>
+                </div>
+            </nav>
+        </header>
 
-    <main>
-        <section class="dashboard-section">
-            <h2>Manage Products</h2>
-            <a href="/add_product" class="btn">Add New Product</a>
-            <a href="/edit_products" class="btn">Edit Products</a>
-        </section>
-
-        <section class="dashboard-section">
-            <h2>Manage Orders</h2>
-            <div class="table-container">
-                <table id="order-table" class="display">
+        <div class="content-wrap">
+            <main>
+                <h1>Admin Dashboard</h1>
+                <table id="orders-table">
                     <thead>
                         <tr>
                             <th>Order ID</th>
-                            <th>User</th>
+                            <th>Items</th>
                             <th>Total Price</th>
                             <th>Date</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        {% for order in orders %}
-                        <tr>
-                            <td>{{ order.id }}</td>
-                            <td>{{ order.user_name }}</td>
-                            <td>${{ order.total_price }}</td>
-                            <td>{{ order.order_date.strftime('%Y-%m-%d %H:%M') }}</td>
-                            <td>{{ order.status }}</td>
-                            <td>
-                                <form class="status-form" method="POST" action="{{ url_for('admin_dashboard') }}">
-                                    <input type="hidden" name="order_id" value="{{ order.id }}">
-                                    <select name="status" class="status-select">
-                                        <option value="Yet to Ship" {% if order.status == 'Yet to Ship' %}selected{% endif %}>Yet to Ship</option>
-                                        <option value="Shipped" {% if order.status == 'Shipped' %}selected{% endif %}>Shipped</option>
-                                        <option value="Delivered" {% if order.status == 'Delivered' %}selected{% endif %}>Delivered</option>
-                                    </select>
-                                    <button type="submit" class="update-btn">Update</button>
-                                </form>
-                            </td>
-                        </tr>
-                        {% endfor %}
+                    <tbody id="orders-body">
+                        <!-- Orders will be populated here -->
                     </tbody>
                 </table>
-            </div>
-        </section>
+            </main>
+        </div>
 
-        <section class="dashboard-section">
-            <h2>Analytics</h2>
-            <a href="/sales_report" class="btn">View Sales Report</a>
-            <a href="/user_stats" class="btn">User Statistics</a>
-        </section>
-    </main>
-
-    <footer>
-        <p>&copy; 2024 FreshBasket Admin. All rights reserved.</p>
-    </footer>
+        <footer>
+            <p>&copy; 2024 FreshBasket Admin. All rights reserved.</p>
+        </footer>
+    </div>
 
     <script>
-        $(document).ready(function() {
-            $('#order-table').DataTable({
-                "order": [[ 0, "desc" ]],
-                "pageLength": 10,
-                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-                "columnDefs": [
-                    { "orderable": false, "targets": 5 }
-                ],
-                "language": {
-                    "search": "Search orders:",
-                    "lengthMenu": "Show _MENU_ orders per page",
-                    "info": "Showing _START_ to _END_ of _TOTAL_ orders",
-                    "infoEmpty": "Showing 0 to 0 of 0 orders",
-                    "infoFiltered": "(filtered from _MAX_ total orders)"
-                },
-                "responsive": true,
-                "scrollX": false
-            });
+        document.addEventListener('DOMContentLoaded', function() {
+            displayOrders();
         });
+
+        function displayOrders() {
+            const ordersBody = document.getElementById('orders-body');
+            let orders = JSON.parse(localStorage.getItem('orders')) || [];
+
+            ordersBody.innerHTML = '';
+
+            orders.forEach((order, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${formatItems(order.items)}</td>
+                    <td>$${order.total.toFixed(2)}</td>
+                    <td>${new Date(order.date).toLocaleDateString()}</td>
+                    <td>${order.status}</td>
+                    <td>
+                        <button onclick="updateStatus(${index}, 'Shipped')">Mark as Shipped</button>
+                        <button onclick="updateStatus(${index}, 'Delivered')">Mark as Delivered</button>
+                    </td>
+                `;
+                ordersBody.appendChild(row);
+            });
+        }
+
+        function formatItems(items) {
+            return items.map(item => `${item.name} (${item.quantity})`).join(', ');
+        }
+
+        function updateStatus(index, newStatus) {
+            let orders = JSON.parse(localStorage.getItem('orders')) || [];
+            if (orders[index]) {
+                orders[index].status = newStatus;
+                localStorage.setItem('orders', JSON.stringify(orders));
+                displayOrders();
+            }
+        }
     </script>
 </body>
 </html>
