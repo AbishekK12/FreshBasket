@@ -228,6 +228,7 @@
 
             let cart = JSON.parse(localStorage.getItem('cart')) || [];
             let order = {
+                id: generateOrderId(),
                 items: cart,
                 address: address,
                 paymentMethod: paymentMethod,
@@ -260,6 +261,9 @@
             setTimeout(() => {
                 window.location.href = 'user_dashboard.html';
             }, 3000);
+
+            // Update admin dashboard
+            updateAdminDashboard(order);
         }
 
         function calculateTotal(cart) {
@@ -305,6 +309,18 @@
             setTimeout(() => {
                 alertElement.style.display = 'none';
             }, 3000);
+        }
+
+        function generateOrderId() {
+            return 'ORD-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+        }
+
+        function updateAdminDashboard(order) {
+            // In a real application, this would be an API call to the server
+            // For this example, we'll use localStorage to simulate server-side storage
+            let adminOrders = JSON.parse(localStorage.getItem('adminOrders')) || [];
+            adminOrders.push(order);
+            localStorage.setItem('adminOrders', JSON.stringify(adminOrders));
         }
     </script>
     <!-- Add this just before the closing </body> tag -->

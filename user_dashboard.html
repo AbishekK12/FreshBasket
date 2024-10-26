@@ -75,6 +75,36 @@
         .modal-btn.cancel {
             background-color: #f44336;
         }
+        .status-pending {
+            background-color: #FFA500;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        .status-processing {
+            background-color: #3498db;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        .status-shipped {
+            background-color: #2ecc71;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        .status-delivered {
+            background-color: #27ae60;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        .status-cancelled {
+            background-color: #e74c3c;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
@@ -145,7 +175,7 @@
                     <td>${formatItems(order.items)}</td>
                     <td>$${order.total}</td>
                     <td>${new Date(order.date).toLocaleDateString()}</td>
-                    <td>${order.status}</td>
+                    <td><span class="${getStatusClass(order.status)}">${order.status}</span></td>
                 `;
                 ordersBody.appendChild(row);
             });
@@ -153,6 +183,23 @@
 
         function formatItems(items) {
             return items.map(item => `${item.name} (${item.quantity})`).join(', ');
+        }
+
+        function getStatusClass(status) {
+            switch (status.toLowerCase()) {
+                case 'pending':
+                    return 'status-pending';
+                case 'processing':
+                    return 'status-processing';
+                case 'shipped':
+                    return 'status-shipped';
+                case 'delivered':
+                    return 'status-delivered';
+                case 'cancelled':
+                    return 'status-cancelled';
+                default:
+                    return '';
+            }
         }
 
         function confirmClearHistory() {
