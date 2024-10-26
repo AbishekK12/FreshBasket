@@ -3,7 +3,7 @@
 
 /* General styles */
 body {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Poppins', Arial, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f8f8f8;
@@ -756,5 +756,200 @@ footer {
 
 .remove-btn:hover {
     background-color: #ff3333;
+}
+
+/* Add these new styles at the end of the file */
+
+body {
+    font-family: 'Poppins', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.banner {
+    background-image: url('path/to/your/vegetable/image.jpg');
+    background-size: cover;
+    color: white;
+    padding: 50px 20px;
+    text-align: center;
+}
+
+.nav-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #fff;
+    color: #333;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.button-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.shop-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4CAF50; /* Changed to green */
+    color: white;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.shop-button.ellipse {
+    border-radius: 25px; /* Elliptical shape */
+    padding: 10px 30px; /* Wider padding for ellipse shape */
+}
+
+.shop-button:hover {
+    background-color: #45a049; /* Darker green on hover */
+    transform: translateY(-3px);
+}
+
+.success-message {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 10px;
+    margin-top: 20px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+/* Note: Some of these styles may override or conflict with existing styles.
+   You may need to adjust or merge them as needed. */
+
+/* Add this new style for centering the buttons */
+.center-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+    gap: 20px; /* Space between the buttons */
+}
+
+.home-button, .shop-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.home-button {
+    border-radius: 10px; /* Rounded edges for rectangle */
+}
+
+.shop-button.ellipse {
+    border-radius: 25px; /* Elliptical shape */
+    padding: 10px 30px; /* Wider padding for ellipse shape */
+}
+
+.home-button:hover, .shop-button:hover {
+    background-color: #45a049;
+    transform: translateY(-3px);
+}
+
+/* Remove this conflicting style */
+/*
+.shop-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: skyblue;
+    color: white;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+*/
+
+.center-text {
+    text-align: center;
+    margin-bottom: 30px; /* Increased space below the title */
+}
+
+.center-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+    gap: 20px; /* Space between the buttons */
+}
+
+.shop-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.shop-button:hover {
+    background-color: #45a049;
+    transform: translateY(-3px);
+}
+
+.home-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    border-radius: 10px; /* Rounded edges for rectangle */
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.home-button:hover {
+    background-color: #45a049;
+    transform: translateY(-3px);
+}
+
+.shop-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: skyblue;
+    color: white;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.shop-button.ellipse {
+    border-radius: 25px; /* Elliptical shape */
+    padding: 10px 30px; /* Wider padding for ellipse shape */
+}
+
+.shop-button:hover {
+    background-color: #5cacee;
+    transform: translateY(-3px);
+}
+
+/* Remove the nav styles */
+nav {
+    display: none;
+}
+
+/* You can remove or comment out the following styles if they're not needed */
+/*
+.nav-button {
+    display: none;
+}
+*/
+
+.center-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-top: 20px; /* Adjust as needed */
+}
+
+.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    border-radius: 4px;
+    padding: 10px 20px;
 }
 

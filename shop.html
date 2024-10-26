@@ -8,38 +8,28 @@
     <link rel="stylesheet" href='styles.css'>
 </head>
 <body>
-    <div class="page-container">
-        <header>
-            <nav>
-                <a href="home.html" class="logo">FreshBasket</a>
-                <div class="nav-links">
-                    <a href="home.html">Home</a>
-                    <a href="shop.html" class="active">Shop</a>
-                    <a href="cart.html">Cart</a>
-                    <a href="login.html">Login</a>
-                </div>
-            </nav>
-        </header>
+    <header>
+        <h1>Shop FreshBasket</h1>
+        <nav>
+            <a href="home.html">Home</a>
+            <a href="shop.html">Shop</a>
+            <a href="cart.html">Cart</a>
+            <a href="login.html">Login</a>
+        </nav>
+    </header>
 
-        <div class="content-wrap">
-            <section id="shop-hero">
-                <div class="hero-content">
-                    <h1>Fresh Produce at Your Fingertips</h1>
-                    <p>Discover our wide selection of farm-fresh fruits and vegetables.</p>
-                </div>
-            </section>
-
-            <main>
-                <section id="product-list" class="product-grid"></section>
-            </main>
+    <main>
+        <div class="center-buttons">
+            <a href="home.html" class="shop-button">Home</a>
+            <a href="shop.html" class="shop-button">Browse Items</a>
+            <a href="dashboard.html" class="shop-button">User Dashboard</a>
         </div>
+        <section id="product-list" class="dashboard"></section>
+    </main>
 
-        <footer>
-            <p>&copy; 2024 FreshBasket. All rights reserved.</p>
-        </footer>
-    </div>
-
-    <div id="custom-alert" class="custom-alert"></div>
+    <footer>
+        <p>&copy; 2024 FreshBasket. All rights reserved.</p>
+    </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -58,54 +48,21 @@
                 const productElement = document.createElement('div');
                 productElement.className = 'product dashboard-item';
                 productElement.innerHTML = `
-                    <img src="${product.image}" alt="${product.name}">
+                    <img src="
+                    ${product.image}" alt="${product.name}">
                     <h3>${product.name}</h3>
                     <p>$${product.price.toFixed(2)}</p>
-                    <div class="quantity-control">
-                        <button onclick="changeQuantity('${product.name}', -1)">-</button>
-                        <input type="number" id="quantity-${product.name.replace(/\s+/g, '-').toLowerCase()}" value="1" min="1" onchange="updateQuantity('${product.name}', this.value)">
-                        <button onclick="changeQuantity('${product.name}', 1)">+</button>
-                    </div>
                     <button onclick="addToCart('${product.name}', ${product.price})">Add to Cart</button>
                 `;
                 productList.appendChild(productElement);
             });
         });
 
-        function changeQuantity(productName, change) {
-            const inputId = `quantity-${productName.replace(/\s+/g, '-').toLowerCase()}`;
-            const input = document.getElementById(inputId);
-            input.value = Math.max(1, parseInt(input.value) + change);
-        }
-
-        function updateQuantity(productName, newQuantity) {
-            const inputId = `quantity-${productName.replace(/\s+/g, '-').toLowerCase()}`;
-            const input = document.getElementById(inputId);
-            input.value = Math.max(1, parseInt(newQuantity) || 1);
-        }
-
         function addToCart(name, price) {
-            const inputId = `quantity-${name.replace(/\s+/g, '-').toLowerCase()}`;
-            const quantity = parseInt(document.getElementById(inputId).value);
             let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            let existingItem = cart.find(item => item.name === name);
-            if (existingItem) {
-                existingItem.quantity += quantity;
-            } else {
-                cart.push({ name, price, quantity });
-            }
+            cart.push({ name, price });
             localStorage.setItem('cart', JSON.stringify(cart));
-            showCustomAlert(`${quantity} ${name}${quantity > 1 ? 's' : ''} added to cart!`, 'success');
-        }
-
-        function showCustomAlert(message, type = 'success') {
-            const alertElement = document.getElementById('custom-alert');
-            alertElement.textContent = message;
-            alertElement.className = `custom-alert ${type}`;
-            alertElement.style.display = 'block';
-            setTimeout(() => {
-                alertElement.style.display = 'none';
-            }, 3000);
+            alert(`${name} added to cart!`);
         }
     </script>
 </body>
