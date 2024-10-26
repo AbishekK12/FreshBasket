@@ -203,8 +203,11 @@ input[type="password"]:hover {
 }
 
 /* Additional styles */
-h1, h2 {
-    color: #2e7d32;
+h1 {
+    color:#fff;
+}
+h2{
+    color: #1b5e20;
 }
 
 a {
