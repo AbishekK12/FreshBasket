@@ -8,23 +8,38 @@
     <link rel="stylesheet" href='styles.css'>
 </head>
 <body>
-    <header>
-        <h1>Shop FreshBasket</h1>
-        <nav>
-            <a href="home.html">Home</a>
-            <a href="shop.html">Shop</a>
-            <a href="cart.html">Cart</a>
-            <a href="login.html">Login</a>
-        </nav>
-    </header>
+    <div class="page-container">
+        <header>
+            <nav>
+                <a href="home.html" class="logo">FreshBasket</a>
+                <div class="nav-links">
+                    <a href="home.html">Home</a>
+                    <a href="shop.html" class="active">Shop</a>
+                    <a href="cart.html">Cart</a>
+                    <a href="login.html">Login</a>
+                </div>
+            </nav>
+        </header>
 
-    <main>
-        <section id="product-list" class="dashboard"></section>
-    </main>
+        <div class="content-wrap">
+            <section id="shop-hero">
+                <div class="hero-content">
+                    <h1>Fresh Produce at Your Fingertips</h1>
+                    <p>Discover our wide selection of farm-fresh fruits and vegetables.</p>
+                </div>
+            </section>
 
-    <footer>
-        <p>&copy; 2024 FreshBasket. All rights reserved.</p>
-    </footer>
+            <main>
+                <section id="product-list" class="product-grid"></section>
+            </main>
+        </div>
+
+        <footer>
+            <p>&copy; 2024 FreshBasket. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <div id="custom-alert" class="custom-alert"></div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -57,7 +72,16 @@
             let cart = JSON.parse(localStorage.getItem('cart')) || [];
             cart.push({ name, price });
             localStorage.setItem('cart', JSON.stringify(cart));
-            alert(`${name} added to cart!`);
+            showCustomAlert(`${name} added to cart!`);
+        }
+
+        function showCustomAlert(message) {
+            const alertElement = document.getElementById('custom-alert');
+            alertElement.textContent = message;
+            alertElement.style.display = 'block';
+            setTimeout(() => {
+                alertElement.style.display = 'none';
+            }, 3000);
         }
     </script>
 </body>
