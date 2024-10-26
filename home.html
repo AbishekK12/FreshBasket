@@ -42,7 +42,7 @@
                 const productElement = document.createElement('div');
                 productElement.className = 'product dashboard-item';
                 productElement.innerHTML = `
-                    <img src="/static/img/${product.image}" alt="${product.name}">
+                    <img src="${product.image}" alt="${product.name}">
                     <h3>${product.name}</h3>
                     <p>$${product.price.toFixed(2)}</p>
                     <button onclick="addToCart('${product.name}', ${product.price})">Add to Cart</button>
