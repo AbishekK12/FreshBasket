@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - FreshBasket</title>
     <link rel="stylesheet" href='styles.css'>
+<<<<<<< HEAD
+=======
+    <link rel="stylesheet" href='admin_dashboard.css'>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+>>>>>>> 01752eb411cea12ebf8183364eccb9b0b323e8a7
 </head>
 <body>
     <header>
@@ -25,8 +32,42 @@
 
         <section class="dashboard-section">
             <h2>Manage Orders</h2>
-            <a href="/view_orders" class="btn">View Orders</a>
-            <a href="/update_orders" class="btn">Update Order Status</a>
+            <div class="table-container">
+                <table id="order-table" class="display">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>User</th>
+                            <th>Total Price</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders %}
+                        <tr>
+                            <td>{{ order.id }}</td>
+                            <td>{{ order.user_name }}</td>
+                            <td>${{ order.total_price }}</td>
+                            <td>{{ order.order_date.strftime('%Y-%m-%d %H:%M') }}</td>
+                            <td>{{ order.status }}</td>
+                            <td>
+                                <form class="status-form" method="POST" action="{{ url_for('admin_dashboard') }}">
+                                    <input type="hidden" name="order_id" value="{{ order.id }}">
+                                    <select name="status" class="status-select">
+                                        <option value="Yet to Ship" {% if order.status == 'Yet to Ship' %}selected{% endif %}>Yet to Ship</option>
+                                        <option value="Shipped" {% if order.status == 'Shipped' %}selected{% endif %}>Shipped</option>
+                                        <option value="Delivered" {% if order.status == 'Delivered' %}selected{% endif %}>Delivered</option>
+                                    </select>
+                                    <button type="submit" class="update-btn">Update</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </section>
 
         <section class="dashboard-section">
@@ -39,5 +80,27 @@
     <footer>
         <p>&copy; 2024 FreshBasket Admin. All rights reserved.</p>
     </footer>
+
+    <script>
+        $(document).ready(function() {
+            $('#order-table').DataTable({
+                "order": [[ 0, "desc" ]],
+                "pageLength": 10,
+                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                "columnDefs": [
+                    { "orderable": false, "targets": 5 }
+                ],
+                "language": {
+                    "search": "Search orders:",
+                    "lengthMenu": "Show _MENU_ orders per page",
+                    "info": "Showing _START_ to _END_ of _TOTAL_ orders",
+                    "infoEmpty": "Showing 0 to 0 of 0 orders",
+                    "infoFiltered": "(filtered from _MAX_ total orders)"
+                },
+                "responsive": true,
+                "scrollX": false
+            });
+        });
+    </script>
 </body>
 </html>
