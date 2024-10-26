@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FreshBasket - Shop</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href='styles.css'>
+</head>
+<body>
+    <header>
+        <h1>Shop FreshBasket</h1>
+        <nav>
+            <a href="home.html">Home</a>
+            <a href="shop.html">Shop</a>
+            <a href="cart.html">Cart</a>
+            <a href="login.html">Login</a>
+        </nav>
+    </header>
+
+    <main>
+        <section id="product-list" class="dashboard"></section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 FreshBasket. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const products = [
+                { name: 'Fresh Apples', price: 2.99, image: 'apple.jpg' },
+                { name: 'Organic Bananas', price: 1.99, image: 'banana.jpg' },
+                { name: 'Crisp Lettuce', price: 1.49, image: 'lettuce.jpg' },
+                { name: 'Ripe Tomatoes', price: 3.49, image: 'tomato.jpg' },
+                { name: 'Sweet Oranges', price: 4.99, image: 'orange.jpg' },
+                { name: 'Fresh Carrots', price: 1.79, image: 'carrot.jpg' }
+            ];
+
+            const productList = document.getElementById('product-list');
+
+            products.forEach(product => {
+                const productElement = document.createElement('div');
+                productElement.className = 'product dashboard-item';
+                productElement.innerHTML = `
+                    <img src="
+                    ${product.image}" alt="${product.name}">
+                    <h3>${product.name}</h3>
+                    <p>$${product.price.toFixed(2)}</p>
+                    <button onclick="addToCart('${product.name}', ${product.price})">Add to Cart</button>
+                `;
+                productList.appendChild(productElement);
+            });
+        });
+
+        function addToCart(name, price) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart.push({ name, price });
+            localStorage.setItem('cart', JSON.stringify(cart));
+            alert(`${name} added to cart!`);
+        }
+    </script>
+</body>
+</html>
