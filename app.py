@@ -4,7 +4,7 @@ from datetime import datetime
 import mysql.connector.pooling
 
 app = Flask(__name__)
-app.secret_key = "your_secret_key"  # Needed for flash messages
+app.secret_key = "freshbasket123"  # Needed for flash messages
 
 db_config = {
     'host': 'freshbasketdb.c5kyko40s4hb.us-east-1.rds.amazonaws.com',
@@ -14,9 +14,11 @@ db_config = {
 }
 
 # Connection pool setup
-cnxpool =mysql.connector.pooling.MySQLConnectionPool(pool_name="mypool",
-                                                      pool_size=5,
-                                                      **db_config)
+cnxpool = mysql.connector.pooling.MySQLConnectionPool(
+    pool_name="mypool",
+    pool_size=5,
+    **db_config
+)
 
 # Function to establish a database connection
 def get_db_connection():
@@ -231,4 +233,4 @@ def admin_dashboard():
     return render_template('admin_dashboard.html', orders=orders)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True)  # Keeps debug mode on
