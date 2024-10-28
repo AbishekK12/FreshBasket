@@ -8,7 +8,7 @@ app.secret_key = "freshbasket123"  # Needed for flash messages
 
 db_config = {
     'host': 'freshbasketdb.c5kyko40s4hb.us-east-1.rds.amazonaws.com',
-    'user': 'root',
+    'user': 'admin',
     'password': 'Freshbasket123',
     'database': 'fresh'
 }
