@@ -89,9 +89,14 @@
         document.getElementById('adminLoginLink').addEventListener('click', function(e) {
             e.preventDefault();
             const loginContainer = document.querySelector('.login-container');
-            const adminLoginText = document.createElement('h3');
-            adminLoginText.textContent = 'Admin Login';
-            loginContainer.insertBefore(adminLoginText, loginContainer.querySelector('h2'));
+            
+            // Check if admin login text already exists
+            if (!document.querySelector('.admin-login-text')) {
+                const adminLoginText = document.createElement('h3');
+                adminLoginText.textContent = 'Admin Login';
+                adminLoginText.classList.add('admin-login-text');
+                loginContainer.insertBefore(adminLoginText, loginContainer.querySelector('h2'));
+            }
             
             const loginForm = document.getElementById('loginForm');
             loginForm.action = 'admin_login.php'; // Change this to your admin login processing script
